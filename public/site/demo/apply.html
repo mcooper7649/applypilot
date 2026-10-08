@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apply — Senior Full Stack Engineer · Northwind Labs (demo)</title>
+<meta name="robots" content="noindex">
+<style>
+  body { margin:0; background:#f6f7f9; font:15px/1.5 "Helvetica Neue", Arial, sans-serif; color:#1f2328; }
+  .bar { background:#14324a; color:#fff; padding:18px 0; }
+  .bar div, main { max-width:720px; margin:0 auto; padding:0 24px; }
+  .bar b { font-size:18px; letter-spacing:.02em; }
+  .bar span { opacity:.7; margin-left:10px; font-size:13px; }
+  main { background:#fff; margin:28px auto 60px; padding:28px 36px 36px; border:1px solid #e3e6ea; border-radius:6px; }
+  h1 { font-size:24px; margin:0 0 4px; } .loc { color:#59636e; margin-bottom:22px; }
+  .demo { background:#fff8e1; border:1px solid #f0d58c; padding:8px 12px; border-radius:4px; font-size:13px; margin-bottom:22px; }
+  h2 { font-size:17px; margin:28px 0 12px; padding-top:18px; border-top:1px solid #e3e6ea; }
+  .f { margin-bottom:16px; } label.l { display:block; font-weight:600; font-size:14px; margin-bottom:5px; }
+  .req { color:#c0392b; }
+  input[type=text], input[type=email], input[type=tel], select, textarea {
+    width:100%; box-sizing:border-box; padding:9px 10px; border:1px solid #c9ced4; border-radius:4px; font:inherit; background:#fff; }
+  textarea { min-height:110px; }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .radios label { display:block; font-weight:400; margin:4px 0; }
+  .file { border:1px dashed #c9ced4; border-radius:4px; padding:10px; font-size:13px; color:#59636e; }
+  button { background:#14324a; color:#fff; border:0; border-radius:4px; padding:12px 22px; font-size:15px; cursor:pointer; margin-top:10px; }
+  .hint { font-size:12px; color:#59636e; }
+</style>
+</head>
+<body>
+<div class="bar"><div><b>NORTHWIND LABS</b><span>Careers</span></div></div>
+<main>
+  <h1>Senior Full Stack Engineer</h1>
+  <div class="loc">Customer Platform · Remote (US)</div>
+  <div class="demo">Demo form for the ApplyPilot walkthrough. Northwind Labs is fictional and nothing here is sent anywhere.</div>
+  <form onsubmit="event.preventDefault(); document.querySelector('main').innerHTML='<h1>Thank you for applying!</h1><p>(Demo — nothing was sent.)</p>'">
+    <div class="row">
+      <div class="f"><label class="l" for="first_name">First Name <span class="req">*</span></label><input type="text" id="first_name" name="first_name" required></div>
+      <div class="f"><label class="l" for="last_name">Last Name <span class="req">*</span></label><input type="text" id="last_name" name="last_name" required></div>
+    </div>
+    <div class="row">
+      <div class="f"><label class="l" for="email">Email <span class="req">*</span></label><input type="email" id="email" name="email" required></div>
+      <div class="f"><label class="l" for="phone">Phone</label><input type="tel" id="phone" name="phone"></div>
+    </div>
+    <div class="f"><label class="l" for="resume">Resume/CV <span class="req">*</span></label>
+      <div class="file"><input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required></div></div>
+    <div class="f"><label class="l" for="cover_letter">Cover Letter</label>
+      <div class="file"><input type="file" id="cover_letter" name="cover_letter" accept=".pdf,.doc,.docx"></div></div>
+    <div class="f"><label class="l" for="linkedin">LinkedIn Profile</label><input type="text" id="linkedin" name="linkedin"></div>
+    <div class="f"><label class="l" for="website">Website or portfolio</label><input type="text" id="website" name="website"></div>
+
+    <h2>A few questions</h2>
+    <div class="f"><label class="l" for="q_react">How many years of professional React experience do you have? <span class="req">*</span></label>
+      <select id="q_react" name="q_react" required><option value="">Select...</option><option>Less than 2</option><option>2–4</option><option>5–7</option><option>8+</option></select></div>
+    <fieldset class="f radios" style="border:0;padding:0;margin:0 0 16px">
+      <legend class="l" style="font-weight:600;font-size:14px;margin-bottom:5px">Are you legally authorized to work in the United States? <span class="req">*</span></legend>
+      <label><input type="radio" name="q_auth" value="yes" required> Yes</label>
+      <label><input type="radio" name="q_auth" value="no"> No</label>
+    </fieldset>
+    <div class="f"><label class="l" for="q_sponsor">Will you now or in the future require visa sponsorship? <span class="req">*</span></label>
+      <select id="q_sponsor" name="q_sponsor" required><option value="">Select...</option><option>Yes</option><option>No</option></select></div>
+    <div class="f"><label class="l" for="q_llm">Have you shipped an LLM-powered feature to production? <span class="req">*</span></label>
+      <select id="q_llm" name="q_llm" required><option value="">Select...</option><option>Yes</option><option>No</option></select></div>
+    <div class="f"><label class="l" for="q_salary">What are your base salary expectations? <span class="req">*</span></label><input type="text" id="q_salary" name="q_salary" required></div>
+    <div class="f"><label class="l" for="q_why">Why are you interested in Northwind Labs? <span class="req">*</span></label>
+      <textarea id="q_why" name="q_why" required></textarea><div class="hint">2–4 sentences is plenty.</div></div>
+
+    <h2>Voluntary Self-Identification</h2>
+    <div class="row">
+      <div class="f"><label class="l" for="gender">Gender</label>
+        <select id="gender" name="gender"><option value="">Select...</option><option>Male</option><option>Female</option><option>Decline To Self Identify</option></select></div>
+      <div class="f"><label class="l" for="veteran_status">Veteran Status</label>
+        <select id="veteran_status" name="veteran_status"><option value="">Select...</option><option>I am a veteran</option><option>I am not a veteran</option><option>I don't wish to answer</option></select></div>
+    </div>
+    <button type="submit">Submit application</button>
+  </form>
+</main>
+</body>
+</html>

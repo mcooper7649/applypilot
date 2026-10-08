@@ -1,0 +1,2 @@
+# Or without compose:
+# docker build -t job-bot . && docker run --rm --env-file .env -v ./data:/app/data -v ./output:/app/output job-bot

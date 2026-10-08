@@ -1,0 +1,275 @@
+{
+  "job": {
+    "title": "Senior Full Stack Engineer",
+    "company": "Northwind Labs",
+    "location": "Remote, US",
+    "salary_min": 150000,
+    "salary_max": 185000,
+    "ats": "other",
+    "url": "https://careers.northwind-labs.example/jobs/senior-full-stack-engineer",
+    "description_chars": 1164
+  },
+  "score": {
+    "fit_score": 95,
+    "match_reason": "Alex has 7+ years of production full-stack experience with expert-level React, TypeScript, Next.js, Node.js, and PostgreSQL\u2014exceeding all core requirements. He has directly shipped LLM features (freight-quote assistant with RAG and evals), logistics domain experience at Freightline, and proven mentorship and design review leadership.",
+    "matched_skills": [
+      "React",
+      "TypeScript",
+      "Next.js",
+      "Node.js",
+      "PostgreSQL",
+      "GraphQL",
+      "API design",
+      "AWS",
+      "Accessibility",
+      "Docker",
+      "LLM/RAG",
+      "Evals",
+      "Mentorship"
+    ],
+    "missing_skills": [],
+    "role_type": "fullstack"
+  },
+  "resume": {
+    "summary": "Senior Full Stack Engineer with 7+ years building production web applications across React, TypeScript, Next.js, Node.js, and PostgreSQL. At Freightline, led platform rebuilds and shipped LLM-powered features in the logistics domain \u2014 directly aligned with Northwind Labs' supply-chain visibility mission. Experienced mentor and technical lead who drives performance, accessibility, and engineering quality through design reviews and rigorous evaluation practices.",
+    "experience": [
+      {
+        "title": "Senior Full Stack Engineer",
+        "company": "Freightline",
+        "dates": "2022 \u2013 Present",
+        "bullets": [
+          "Shipped an LLM-powered freight-quote assistant using retrieval over 200K past quotes, with an eval suite gating every release \u2014 directly applicable to productionizing LLM insights in a supply-chain context.",
+          "Designed a GraphQL gateway consolidating 6 backend services, cutting frontend API calls per page by 60% and improving platform scalability.",
+          "Led a 4-person team rebuilding the shipper dashboard in Next.js and TypeScript; reduced page load times from 4.1s to 1.3s.",
+          "Mentored 3 junior engineers and introduced RFC-based design reviews, raising engineering quality and team alignment across the organization."
+        ]
+      },
+      {
+        "title": "Full Stack Engineer",
+        "company": "Brightpath Health",
+        "dates": "2019 \u2013 2022",
+        "bullets": [
+          "Built and shipped patient-scheduling features in React and Node.js, adopted by 40 clinics in production.",
+          "Migrated a monolith's reporting module to a PostgreSQL read replica, eliminating nightly timeout failures and improving data reliability.",
+          "Owned end-to-end WCAG 2.1 AA accessibility remediation across the patient portal, raising the bar on frontend quality and inclusivity."
+        ]
+      },
+      {
+        "title": "Software Engineer",
+        "company": "Cobalt Agency",
+        "dates": "2017 \u2013 2019",
+        "bullets": [
+          "Delivered 12 client-facing web applications in React and Express on fixed timelines, demonstrating consistent full-stack execution.",
+          "Established the agency's first CI pipeline and Docker-based development environments, improving team velocity and deployment consistency."
+        ]
+      }
+    ],
+    "skills": {
+      "Frontend": [
+        "React",
+        "TypeScript",
+        "Next.js",
+        "Tailwind CSS",
+        "Accessibility"
+      ],
+      "Backend & Data": [
+        "Node.js",
+        "PostgreSQL",
+        "GraphQL",
+        "Redis",
+        "Python"
+      ],
+      "AI / LLM": [
+        "Claude API",
+        "RAG",
+        "Evals"
+      ],
+      "Cloud & DevOps": [
+        "AWS",
+        "Docker",
+        "Terraform",
+        "GitHub Actions"
+      ],
+      "Practices": [
+        "API Design",
+        "Mentorship",
+        "Design Reviews"
+      ]
+    },
+    "projects": [
+      {
+        "name": "promptdiff",
+        "description": "CLI tool that diffs LLM outputs across prompt versions for regression testing, enabling structured evaluation of model behavior changes.",
+        "tech": "TypeScript, CLI"
+      },
+      {
+        "name": "Trailmix",
+        "description": "Open-source trip planning application with 1.2K GitHub stars, featuring geospatial data, interactive maps, and a PostgreSQL backend.",
+        "tech": "Next.js, Mapbox, PostgreSQL"
+      }
+    ]
+  },
+  "cover_letter": "I'm excited to apply for the Senior Full Stack Engineer role on Northwind Labs' Customer Platform team. Your mission \u2014 giving mid-market manufacturers real-time visibility into shipments and the intelligence to predict delays before they happen \u2014 maps closely to the work I've been doing at Freightline, a logistics SaaS platform, where I've spent the past three years building exactly this kind of customer-facing, data-intensive software.\n\nAt Freightline, I led the rebuild of our core shipper dashboard in Next.js and TypeScript, cutting page load times from 4.1s to 1.3s, and designed a GraphQL gateway over six backend services that reduced frontend API calls per page by 60%. On the LLM side, I shipped a freight-quote assistant powered by retrieval over 200K historical quotes, and built an eval suite that gates every release \u2014 which maps directly to the productionization work your ML team needs. I also built promptdiff, an open-source CLI for diffing LLM outputs across prompt versions, reflecting how seriously I take evaluation as a first-class engineering concern. Earlier, at Brightpath Health, I deepened my PostgreSQL skills by migrating a monolith's reporting module to a read replica to eliminate production timeouts, and I led WCAG 2.1 AA accessibility improvements across a patient-facing portal \u2014 both areas your job description calls out explicitly.\n\nI'm drawn to Northwind Labs because the problem is hard in exactly the right ways: scale, domain complexity, and the opportunity to bring LLM-powered insights to customers who will genuinely use them to make better decisions. I'd love to bring my logistics domain experience and full-stack depth to your Customer Platform team. I'm happy to schedule a conversation at your convenience \u2014 thank you for your consideration.",
+  "fields": [
+    {
+      "label": "First Name",
+      "kind": "text",
+      "required": true,
+      "value": "Alex",
+      "source": "profile",
+      "needs_review": false,
+      "note": "",
+      "fill_error": null
+    },
+    {
+      "label": "Last Name",
+      "kind": "text",
+      "required": true,
+      "value": "Rivera",
+      "source": "profile",
+      "needs_review": false,
+      "note": "",
+      "fill_error": null
+    },
+    {
+      "label": "Email",
+      "kind": "text",
+      "required": true,
+      "value": "alex.rivera@example.com",
+      "source": "profile",
+      "needs_review": false,
+      "note": "",
+      "fill_error": null
+    },
+    {
+      "label": "Phone",
+      "kind": "text",
+      "required": false,
+      "value": "(512) 555-0142",
+      "source": "profile",
+      "needs_review": false,
+      "note": "",
+      "fill_error": null
+    },
+    {
+      "label": "Resume/CV",
+      "kind": "file",
+      "required": true,
+      "value": "resume",
+      "source": "profile",
+      "needs_review": false,
+      "note": "",
+      "fill_error": null
+    },
+    {
+      "label": "Cover Letter",
+      "kind": "file",
+      "required": false,
+      "value": "cover_letter",
+      "source": "profile",
+      "needs_review": false,
+      "note": "",
+      "fill_error": null
+    },
+    {
+      "label": "LinkedIn Profile",
+      "kind": "text",
+      "required": false,
+      "value": "https://linkedin.com/in/alex-rivera-demo",
+      "source": "profile",
+      "needs_review": false,
+      "note": "",
+      "fill_error": null
+    },
+    {
+      "label": "Website or portfolio",
+      "kind": "text",
+      "required": false,
+      "value": "https://alexrivera.dev",
+      "source": "profile",
+      "needs_review": false,
+      "note": "",
+      "fill_error": null
+    },
+    {
+      "label": "How many years of professional React experience do you have?",
+      "kind": "select",
+      "required": true,
+      "value": "8+",
+      "source": "profile",
+      "needs_review": true,
+      "note": "React used across all roles since 2017 (Cobalt, Brightpath, Freightline). Please confirm the 8+ bracket versus 5\u20137.",
+      "fill_error": null
+    },
+    {
+      "label": "Will you now or in the future require visa sponsorship?",
+      "kind": "select",
+      "required": true,
+      "value": "No",
+      "source": "standing_answers",
+      "needs_review": false,
+      "note": "Standing answer: requires_sponsorship = No.",
+      "fill_error": null
+    },
+    {
+      "label": "Have you shipped an LLM-powered feature to production?",
+      "kind": "select",
+      "required": true,
+      "value": "Yes",
+      "source": "profile",
+      "needs_review": false,
+      "note": "Shipped an LLM-powered freight-quote assistant at Freightline.",
+      "fill_error": null
+    },
+    {
+      "label": "What are your base salary expectations?",
+      "kind": "text",
+      "required": true,
+      "value": "",
+      "source": "unknown",
+      "needs_review": true,
+      "note": "Salary standing answer is not set. Profile target is $130K+; the posted range is $150K\u2013$185K.",
+      "fill_error": null
+    },
+    {
+      "label": "Why are you interested in Northwind Labs?",
+      "kind": "textarea",
+      "required": true,
+      "value": "Northwind's mission of giving mid-market manufacturers shipment visibility and delay prediction closely matches my work at Freightline, a logistics SaaS company. There I led the Next.js/TypeScript rebuild of our shipper dashboard, cutting page loads from 4.1s to 1.3s. I also designed a GraphQL gateway over six services that cut frontend API calls per page by 60%. I shipped an LLM-powered freight-quote assistant using retrieval over 200K past quotes, with an eval suite gating every release. That is the kind of productionization work your Customer Platform team is doing with your ML team. At Brightpath Health I moved a reporting module to a PostgreSQL read replica and owned WCAG 2.1 AA accessibility fixes across the patient portal. I'm drawn to Northwind because the problem combines scale, domain complexity and the chance to put useful LLM insights in front of customers. I'd love to bring my logistics experience, full-stack depth and mentoring background to the team.",
+      "source": "drafted",
+      "needs_review": true,
+      "note": "Drafted from the cover letter and profile facts.",
+      "fill_error": null
+    },
+    {
+      "label": "Gender",
+      "kind": "select",
+      "required": false,
+      "value": "Decline To Self Identify",
+      "source": "standing_answers",
+      "needs_review": false,
+      "note": "Standing answer mapped to the closest option.",
+      "fill_error": null
+    },
+    {
+      "label": "Veteran Status",
+      "kind": "select",
+      "required": false,
+      "value": "I don't wish to answer",
+      "source": "standing_answers",
+      "needs_review": false,
+      "note": "Standing answer matches an option exactly.",
+      "fill_error": null
+    },
+    {
+      "label": "Are you legally authorized to work in the United States?",
+      "kind": "radio",
+      "required": true,
+      "value": "Yes",
+      "source": "standing_answers",
+      "needs_review": false,
+      "note": "Standing answer: Yes \u2014 US citizen.",
+      "fill_error": null
+    }
+  ]
+}

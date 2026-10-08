@@ -1,0 +1,21 @@
+Northwind Labs — Senior Full Stack Engineer (Remote, US)
+
+Northwind Labs builds supply-chain visibility software for mid-market manufacturers. Our platform tracks 2 million shipments a month and our customers use it to predict delays before they happen.
+
+About the role
+We're hiring a Senior Full Stack Engineer to join the Customer Platform team. You'll own features end to end — from the React front end to Node.js services and the PostgreSQL schemas behind them — and help us bring LLM-powered insights into the product.
+
+What you'll do
+- Build and ship customer-facing features in React, TypeScript and Next.js
+- Design APIs (REST and GraphQL) and data models in PostgreSQL
+- Partner with our ML team to productionize LLM features: retrieval, summaries, anomaly explanations
+- Raise the bar on performance, accessibility and testing
+- Mentor engineers and lead technical design reviews
+
+What we're looking for
+- 5+ years building production web applications
+- Deep experience with React and TypeScript; solid Node.js
+- Experience with PostgreSQL and API design
+- Bonus: logistics or supply-chain domain experience; shipped LLM features; AWS
+
+Compensation: $150,000 – $185,000 base + equity. Fully remote within the US.

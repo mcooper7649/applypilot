@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Job Bot — Tracker &amp; Profile</title>
+<style>
+  :root {
+    --bg:#0f1419; --panel:#1a212b; --panel2:#222c38; --line:#2c3744;
+    --text:#e6edf3; --muted:#8a98a8; --accent:#4f9cff; --good:#3fb950;
+    --warn:#d29922; --bad:#f85149; --offer:#a371f7;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text);
+    font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+  header { padding:16px 28px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  header h1 { font-size:18px; margin:0; font-weight:650; }
+  nav { display:flex; gap:6px; }
+  nav button { background:transparent; color:var(--muted); border:1px solid transparent;
+    padding:7px 14px; border-radius:8px; cursor:pointer; font-size:14px; }
+  nav button:hover { color:var(--text); }
+  nav button.active { background:var(--panel2); color:var(--text); border-color:var(--line); }
+  .spacer { margin-left:auto; }
+  .sub { color:var(--muted); font-size:13px; }
+  .wrap { padding:22px 28px 80px; max-width:1500px; margin:0 auto; }
+  .hide { display:none !important; }
+
+  /* cards / tracker */
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:12px; margin-bottom:22px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
+  .card .n { font-size:26px; font-weight:700; }
+  .card .l { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.04em; margin-top:2px; }
+  .filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+  .filters button { background:var(--panel); color:var(--muted); border:1px solid var(--line);
+    padding:6px 13px; border-radius:20px; cursor:pointer; font-size:13px; }
+  .filters button:hover { color:var(--text); }
+  .filters button.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+  table { width:100%; border-collapse:collapse; }
+  th { text-align:left; color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase;
+    letter-spacing:.03em; padding:10px 12px; border-bottom:1px solid var(--line); }
+  td { padding:12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  tr:hover td { background:var(--panel); }
+  .company { font-weight:650; }
+  .title { color:var(--muted); font-size:13px; }
+  .fit { display:inline-block; min-width:34px; text-align:center; padding:2px 7px; border-radius:6px;
+    font-weight:650; font-size:13px; background:var(--panel2); }
+  .fit.hi { color:var(--good); } .fit.mid { color:var(--warn); } .fit.lo { color:var(--muted); }
+  .salary { white-space:nowrap; font-size:13px; }
+  .muted { color:var(--muted); }
+  a.doc, button.doc { display:inline-block; padding:4px 10px; border:1px solid var(--line); border-radius:6px;
+    color:var(--accent); text-decoration:none; font-size:12px; margin:0 4px 4px 0; white-space:nowrap;
+    background:transparent; cursor:pointer; font-family:inherit; }
+  a.doc:hover, button.doc:hover { background:var(--panel2); }
+  a.doc.disabled { color:var(--muted); border-style:dashed; pointer-events:none; opacity:.5; }
+  button.doc.apply { background:#C72C75; border-color:#C72C75; color:#fff; font-weight:600; }
+  button.doc.apply:hover { background:#a82460; border-color:#a82460; }
+  select.status { background:var(--panel2); color:var(--text); border:1px solid var(--line);
+    border-radius:6px; padding:5px 8px; font-size:13px; cursor:pointer; }
+  select.status.s-applied { border-color:var(--accent); color:var(--accent); }
+  select.status.s-interview { border-color:var(--warn); color:var(--warn); }
+  select.status.s-offer { border-color:var(--offer); color:var(--offer); }
+  select.status.s-rejected { border-color:var(--bad); color:var(--bad); }
+  select.status.s-skipped { opacity:.55; }
+  textarea.notes { width:100%; min-width:150px; background:var(--panel2); color:var(--text);
+    border:1px solid var(--line); border-radius:6px; padding:6px 8px; font:inherit; font-size:12px;
+    resize:vertical; min-height:34px; }
+  .saved { color:var(--good); font-size:11px; }
+  .empty { text-align:center; color:var(--muted); padding:60px; }
+  .lowscore td { opacity:.6; }
+
+  /* forms */
+  .section { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin-bottom:18px; }
+  .section h2 { font-size:15px; margin:0 0 14px; display:flex; align-items:center; gap:10px; }
+  .section h2 .hint { font-weight:400; font-size:12px; color:var(--muted); }
+  label { display:block; font-size:12px; color:var(--muted); margin:0 0 4px; }
+  input[type=text], textarea, .fld { width:100%; background:var(--panel2); color:var(--text);
+    border:1px solid var(--line); border-radius:7px; padding:8px 10px; font:inherit; font-size:13px; }
+  textarea.area { resize:vertical; min-height:64px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .grid3 { display:grid; grid-template-columns:2fr 2fr 1fr; gap:10px; }
+  .row { margin-bottom:10px; }
+  .editrow { display:grid; gap:8px; align-items:start; background:var(--panel2); border:1px solid var(--line);
+    border-radius:8px; padding:10px; margin-bottom:8px; position:relative; }
+  .editrow .rm { position:absolute; top:8px; right:8px; background:transparent; border:1px solid var(--line);
+    color:var(--bad); border-radius:6px; cursor:pointer; font-size:11px; padding:2px 7px; }
+  .addbtn { background:transparent; border:1px dashed var(--line); color:var(--accent); border-radius:8px;
+    padding:7px 12px; cursor:pointer; font-size:13px; }
+  .btn { background:var(--accent); color:#fff; border:none; border-radius:8px; padding:9px 18px;
+    font-size:14px; cursor:pointer; font-family:inherit; }
+  .btn.ghost { background:transparent; border:1px solid var(--line); color:var(--text); }
+  .btn:disabled { opacity:.5; cursor:default; }
+  .bar { display:flex; gap:10px; align-items:center; position:sticky; bottom:0; background:var(--bg);
+    padding:14px 0; border-top:1px solid var(--line); }
+  .toast { color:var(--good); font-size:13px; }
+  .toast.err { color:var(--bad); }
+  .srcline { font-size:12px; margin:3px 0; }
+  .ok { color:var(--good); } .bad { color:var(--bad); } .warnc { color:var(--warn); }
+
+  /* add-by-link + apply assistant */
+  .addjob { display:flex; gap:10px; flex-wrap:wrap; align-items:center; background:var(--panel);
+    border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:18px; }
+  .addjob input[type=text] { flex:1 1 320px; }
+  .addjob textarea { flex:1 1 100%; min-height:90px; }
+  .chip { display:inline-block; font-size:11px; padding:2px 8px; border-radius:20px; border:1px solid var(--line);
+    color:var(--muted); white-space:nowrap; margin:0 4px 4px 0; }
+  .chip.busy { color:var(--accent); border-color:var(--accent); }
+  .chip.review { color:var(--warn); border-color:var(--warn); }
+  .chip.done { color:var(--good); border-color:var(--good); }
+  .chip.bad { color:var(--bad); border-color:var(--bad); }
+  .spin { display:inline-block; width:10px; height:10px; border:2px solid currentColor; border-right-color:transparent;
+    border-radius:50%; animation:spin .8s linear infinite; vertical-align:-1px; margin-right:5px; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .errtxt { color:var(--bad); font-size:12px; max-width:420px; }
+  .ftable { width:100%; border-collapse:collapse; }
+  .ftable td { padding:8px 6px; border-bottom:1px solid var(--line); vertical-align:top; }
+  .ftable tr.flag td { background:rgba(210,153,34,.08); }
+  .ftable .q { width:38%; font-size:13px; }
+  .ftable .req { color:var(--bad); }
+  .src { font-size:10px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+  .src.drafted, .src.unknown { color:var(--warn); }
+  .src.user, .src.approved { color:var(--good); }
+  .shot { width:100%; max-height:340px; object-fit:cover; object-position:top; border:1px solid var(--line);
+    border-radius:8px; cursor:zoom-in; }
+  .note { font-size:11px; color:var(--muted); margin-top:3px; }
+  pre.log { background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:10px;
+    font-size:11px; white-space:pre-wrap; max-height:180px; overflow:auto; }
+  @media (max-width:700px) { .wrap { padding:16px 16px 80px; } header { padding:14px 16px; }
+    .grid2, .grid3 { grid-template-columns:1fr; } .ftable .q { width:auto; } }
+
+  /* modal */
+  .modal-bg { position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex; align-items:flex-start;
+    justify-content:center; padding:40px 16px; overflow:auto; z-index:50; }
+  .modal { background:var(--bg); border:1px solid var(--line); border-radius:14px; width:min(900px,100%);
+    padding:22px 24px; }
+  .modal h2 { margin:0 0 4px; font-size:17px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Job Bot</h1>
+  <nav>
+    <button id="nav-apps" class="active" onclick="switchView('apps')">Applications</button>
+    <button id="nav-profile" onclick="switchView('profile')">My Profile</button>
+  </nav>
+  <span class="sub" id="apps-toast" style="color:var(--good);margin-left:18px"></span>
+  <span class="spacer"></span>
+  <span class="sub" id="updated"></span>
+</header>
+
+<!-- ───────── APPLICATIONS ───────── -->
+<div class="wrap" id="view-apps">
+  <div class="addjob">
+    <input type="text" id="add-url" placeholder="Paste a job link — Greenhouse, Lever, Ashby or any posting page"
+           onkeydown="if(event.key==='Enter')addJob()">
+    <button class="btn" id="add-btn" onclick="addJob()">Tailor &amp; add</button>
+    <button class="btn ghost" onclick="$('add-desc').classList.toggle('hide')">Paste description</button>
+    <textarea class="area hide" id="add-desc" placeholder="Optional — paste the job description if the page needs a login or won't load"></textarea>
+    <span class="toast" id="add-toast"></span>
+  </div>
+  <div class="cards" id="cards"></div>
+  <div class="filters" id="filters"></div>
+  <table>
+    <thead><tr>
+      <th>Date</th><th>Company / Role</th><th>Salary</th><th>Fit</th>
+      <th>Pipeline</th><th>Documents</th><th>Notes</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <div class="empty" id="empty" style="display:none">No jobs match this filter.</div>
+</div>
+
+<!-- ───────── PROFILE ───────── -->
+<div class="wrap hide" id="view-profile">
+  <div class="section">
+    <h2>Import from my links <span class="hint">crawl your sites and propose facts — you review before saving</span></h2>
+    <div class="grid3 row">
+      <div><label>Website / portfolio</label><input type="text" id="imp-website" placeholder="mycodedojo.com"></div>
+      <div><label>GitHub</label><input type="text" id="imp-github" placeholder="github.com/yourhandle"></div>
+      <div><label>LinkedIn</label><input type="text" id="imp-linkedin" placeholder="linkedin.com/in/you"></div>
+    </div>
+    <div style="display:flex; gap:10px; align-items:center;">
+      <button class="btn ghost" id="imp-run" onclick="runImport()">Crawl &amp; suggest</button>
+      <span id="imp-status" class="sub"></span>
+    </div>
+    <div style="display:flex; gap:10px; align-items:center; margin-top:14px; flex-wrap:wrap">
+      <label class="btn ghost" style="margin:0;display:inline-block;color:var(--text);font-size:14px">
+        Upload my latest resume…<input type="file" id="imp-file" accept=".pdf,.docx,.txt,.md" class="hide" onchange="uploadResume(this)">
+      </label>
+      <span class="sub">PDF or DOCX. New facts are proposed below for you to review. Nothing is saved until you click Save profile.</span>
+    </div>
+    <div id="imp-result" style="margin-top:12px"></div>
+  </div>
+
+  <div class="section">
+    <h2>Basics</h2>
+    <div class="grid2 row">
+      <div><label>Name</label><input type="text" id="p-name"></div>
+      <div><label>Headline / title</label><input type="text" id="p-title"></div>
+    </div>
+    <div class="grid2 row">
+      <div><label>Location</label><input type="text" id="p-location"></div>
+      <div><label>Target (roles, salary, remote)</label><input type="text" id="p-target"></div>
+    </div>
+    <div class="grid3 row">
+      <div><label>Email</label><input type="text" id="c-email"></div>
+      <div><label>Phone</label><input type="text" id="c-phone"></div>
+      <div><label>Website</label><input type="text" id="c-website"></div>
+    </div>
+    <div class="grid2 row">
+      <div><label>LinkedIn</label><input type="text" id="c-linkedin"></div>
+      <div><label>GitHub</label><input type="text" id="c-github"></div>
+    </div>
+    <label>Default summary (the AI tailors this per job)</label>
+    <textarea class="area" id="p-summary"></textarea>
+    <label style="margin-top:10px">AI &amp; Tooling expertise <span style="color:var(--muted);font-weight:400">— shown verbatim on every resume</span></label>
+    <textarea class="area" id="p-aitooling" style="min-height:90px"></textarea>
+  </div>
+
+  <div class="section">
+    <h2>Education <span class="hint">rendered exactly as entered — never AI-generated</span></h2>
+    <div id="edu-list"></div>
+    <button class="addbtn" onclick="addEdu()">+ Add education</button>
+  </div>
+
+  <div class="section">
+    <h2>Certifications <span class="hint">rendered exactly as entered — never AI-generated</span></h2>
+    <div id="cert-list"></div>
+    <button class="addbtn" onclick="addCert()">+ Add certification</button>
+  </div>
+
+  <div class="section">
+    <h2>Skills</h2>
+    <div id="skill-list"></div>
+    <button class="addbtn" onclick="addSkill()">+ Add category</button>
+  </div>
+
+  <div class="section">
+    <h2>Experience</h2>
+    <div id="exp-list"></div>
+    <button class="addbtn" onclick="addExp()">+ Add job</button>
+  </div>
+
+  <div class="section">
+    <h2>Projects</h2>
+    <div id="proj-list"></div>
+    <button class="addbtn" onclick="addProj()">+ Add project</button>
+  </div>
+
+  <div class="section">
+    <h2>Application answers <span class="hint">used to fill application forms. Leave a legal or eligibility answer blank and you'll be asked every time</span></h2>
+    <div class="grid2" id="aa-list"></div>
+  </div>
+
+  <div class="section">
+    <h2>Saved Q&amp;A <span class="hint">answers you approved on past applications, reused when the same question comes up</span></h2>
+    <div id="qa-list"></div>
+    <button class="addbtn" onclick="addQA()">+ Add Q&amp;A</button>
+  </div>
+
+  <div class="bar">
+    <button class="btn" onclick="saveProfile()">Save profile</button>
+    <button class="btn ghost" onclick="loadProfile()">Reload</button>
+    <span class="toast" id="p-toast"></span>
+  </div>
+</div>
+
+<!-- ───────── PER-JOB RESUME MODAL ───────── -->
+<div class="modal-bg hide" id="modal-bg">
+  <div class="modal">
+    <h2 id="m-title">Edit resume</h2>
+    <div class="sub" id="m-sub" style="margin-bottom:14px"></div>
+    <div class="section" style="background:var(--panel2)">
+      <label>Summary</label>
+      <textarea class="area" id="m-summary"></textarea>
+    </div>
+    <div class="section" style="background:var(--panel2)"><h2>Experience</h2><div id="m-exp"></div>
+      <button class="addbtn" onclick="addExp('m-exp')">+ Add job</button></div>
+    <div class="section" style="background:var(--panel2)"><h2>Skills</h2><div id="m-skill"></div>
+      <button class="addbtn" onclick="addSkill('m-skill')">+ Add category</button></div>
+    <div class="section" style="background:var(--panel2)"><h2>Projects</h2><div id="m-proj"></div>
+      <button class="addbtn" onclick="addProj('m-proj')">+ Add project</button></div>
+    <div class="section" style="background:var(--panel2)"><h2>Cover letter</h2>
+      <textarea class="area" id="m-cover" style="min-height:160px"></textarea></div>
+    <div class="bar" style="position:static; border:none">
+      <button class="btn" id="m-save" onclick="saveResume()">Save &amp; re-render PDF</button>
+      <button class="btn ghost" onclick="closeModal()">Cancel</button>
+      <span class="toast" id="m-toast"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ───────── APPLY REVIEW MODAL ───────── -->
+<div class="modal-bg hide" id="ap-bg">
+  <div class="modal" style="width:min(1000px,100%)">
+    <h2 id="ap-title">Review application</h2>
+    <div class="sub" id="ap-sub" style="margin-bottom:12px"></div>
+    <div id="ap-state" style="margin-bottom:12px"></div>
+    <div id="ap-shots" style="display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))"></div>
+    <div class="section" style="background:var(--panel2);margin-top:14px;padding:12px 14px">
+      <table class="ftable"><tbody id="ap-fields"></tbody></table>
+    </div>
+    <details><summary class="sub" style="cursor:pointer">Worker log</summary><pre class="log" id="ap-log"></pre></details>
+    <label style="margin-top:10px"><input type="checkbox" id="ap-remember" checked> Save my answers to custom questions to Saved Q&amp;A</label>
+    <div class="bar" style="position:static; border:none; flex-wrap:wrap">
+      <button class="btn" id="ap-submit" onclick="approveSubmit()">Approve &amp; submit</button>
+      <button class="btn ghost" onclick="saveAnswers()">Save answers</button>
+      <button class="btn ghost" onclick="refill()">Re-fill form</button>
+      <button class="btn ghost" onclick="manualApply(AP_JOB)">I'll do it myself</button>
+      <button class="btn ghost" onclick="closeApply()">Close</button>
+      <span class="toast" id="ap-toast"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+const PIPE_LABELS = {to_apply:"To apply",applied:"Applied",interview:"Interview",offer:"Offer",rejected:"Rejected",skipped:"Skipped"};
+let STATE = {jobs:[],summary:{},pipeline:[],filter:"all"};
+let CURRENT_JOB = null;
+
+const $ = id => document.getElementById(id);
+function esc(s){return (s==null?"":""+s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function el(html){const t=document.createElement("template");t.innerHTML=html.trim();return t.content.firstChild;}
+
+function switchView(v){
+  document.getElementById("view-apps").classList.toggle("hide",v!=="apps");
+  document.getElementById("view-profile").classList.toggle("hide",v!=="profile");
+  document.getElementById("nav-apps").classList.toggle("active",v==="apps");
+  document.getElementById("nav-profile").classList.toggle("active",v==="profile");
+  if(v==="profile" && !PROFILE_LOADED) loadProfile();
+}
+
+/* ───── Applications ───── */
+function fmtSalary(j){const f=n=>"$"+Math.round(n/1000)+"k";
+  if(j.salary_min&&j.salary_max&&j.salary_min!==j.salary_max)return f(j.salary_min)+"–"+f(j.salary_max);
+  if(j.salary_min)return f(j.salary_min); if(j.salary_max)return f(j.salary_max); return "<span class='muted'>—</span>";}
+function fitClass(s){return s>=80?"hi":s>=65?"mid":"lo";}
+
+function renderCards(){const s=STATE.summary;
+  const cards=[["To apply",s.to_apply,"var(--accent)"],["Applied",s.applied,"var(--good)"],
+    ["Interview",s.interview,"var(--warn)"],["Offer",s.offer,"var(--offer)"],
+    ["Rejected",s.rejected,"var(--bad)"],["Total tracked",s.ready,"var(--text)"]];
+  document.getElementById("cards").innerHTML=cards.map(([l,n,c])=>
+    `<div class="card"><div class="n" style="color:${c}">${n||0}</div><div class="l">${l}</div></div>`).join("");}
+
+function renderFilters(){const counts={all:STATE.jobs.length}; STATE.pipeline.forEach(p=>counts[p]=0); counts.low_score=0;
+  STATE.jobs.forEach(j=>{ if(j.status==="low_score")counts.low_score++; else counts[j.app_status]=(counts[j.app_status]||0)+1; });
+  const tabs=[["all","All"],...STATE.pipeline.map(p=>[p,PIPE_LABELS[p]]),["low_score","Below cutoff"]];
+  document.getElementById("filters").innerHTML=tabs.map(([k,label])=>
+    `<button data-f="${k}" class="${STATE.filter===k?'active':''}">${label} <span class="muted">${counts[k]||0}</span></button>`).join("");
+  document.querySelectorAll("#filters button").forEach(b=>b.onclick=()=>{STATE.filter=b.dataset.f;renderFilters();renderRows();});}
+
+function visible(){ if(STATE.filter==="all")return STATE.jobs;
+  if(STATE.filter==="low_score")return STATE.jobs.filter(j=>j.status==="low_score");
+  return STATE.jobs.filter(j=>j.status!=="low_score"&&j.app_status===STATE.filter);}
+
+function renderRows(){const jobs=visible();
+  document.getElementById("empty").style.display=jobs.length?"none":"block";
+  document.getElementById("rows").innerHTML=jobs.map(j=>{
+    const low=j.status==="low_score"; const date=(j.created_at||"").slice(0,10);
+    if(j.status==="processing"||j.status==="error") return `<tr>
+      <td class="muted" style="white-space:nowrap">${date}</td>
+      <td><div class="company">${esc(j.company)}</div><div class="title">${esc(j.title)}</div></td>
+      <td></td><td></td><td></td>
+      <td colspan="2">${j.status==="processing"
+        ? `<span class="chip busy"><span class="spin"></span>Reading posting and tailoring resume (about a minute)</span>`
+        : `<div class="errtxt">${esc(j.error||"failed")}</div>
+           <button class="doc" onclick="retryJob('${j.id}')">Retry</button>
+           <button class="doc" onclick="removeJob('${j.id}')">Remove</button>`}
+        <a class="doc" href="${j.url}" target="_blank" rel="noopener">Posting ↗</a></td></tr>`;
+    const opts=STATE.pipeline.map(p=>`<option value="${p}" ${j.app_status===p?"selected":""}>${PIPE_LABELS[p]}</option>`).join("");
+    const docCell = low
+      ? `<span class="muted" style="font-size:12px">not generated</span><br><a class="doc" href="${j.url}" target="_blank" rel="noopener">Posting ↗</a>`
+      : `${j.resume_file?applyCell(j):""}
+         <a class="doc ${j.resume_file?'':'disabled'}" href="/pdf/${j.id}/resume" target="_blank">Resume</a>
+         <a class="doc ${j.cover_file?'':'disabled'}" href="/pdf/${j.id}/cover" target="_blank">Cover</a>
+         <a class="doc" href="${j.url}" target="_blank" rel="noopener">Posting ↗</a>
+         ${j.has_content?`<button class="doc" onclick="openResume('${j.id}')">✎ Edit</button>`:""}`;
+    return `<tr class="${low?'lowscore':''}">
+      <td class="muted" style="white-space:nowrap">${date}</td>
+      <td><div class="company">${esc(j.company)}</div><div class="title">${esc(j.title)}</div>
+          ${j.applied_at?`<div class="muted" style="font-size:11px">applied ${j.applied_at}</div>`:""}</td>
+      <td class="salary">${fmtSalary(j)}</td>
+      <td><span class="fit ${fitClass(j.fit_score)}">${j.fit_score??"—"}</span></td>
+      <td>${low?'<span class="muted">—</span>':`<select class="status s-${j.app_status}" onchange="setStatus('${j.id}',this)">${opts}</select>`}</td>
+      <td>${docCell}</td>
+      <td><textarea class="notes" placeholder="add a note…" onblur="saveNotes('${j.id}',this)">${esc(j.notes||"")}</textarea>
+          ${low?"":`<label class="sub" style="font-size:11px;margin-top:4px" title="Show the company name on the public ApplyPilot log. Off means the entry is anonymized."><input type="checkbox" ${j.show_public?"checked":""} onchange="post('/api/jobs/${j.id}',{show_public:this.checked})"> show company publicly</label>`}
+          <span class="saved" id="saved-${j.id}"></span></td>
+    </tr>`;}).join("");}
+
+async function setStatus(id,sel){sel.className="status s-"+sel.value;
+  await fetch("/api/jobs/"+id,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({app_status:sel.value})});
+  loadJobs();}
+
+const AP_LABELS={fill_requested:["Queued to fill","busy"],filling:["Filling form","busy"],
+  awaiting_review:["Ready for review","review"],submit_requested:["Queued to submit","busy"],
+  submitting:["Submitting","busy"],submitted:["Submitted ✓","done"],needs_manual:["Needs you","bad"],failed:["Auto-fill failed","bad"]};
+function applyCell(j){const st=AP_LABELS[j.apply_status]; let h="";
+  if(st)h+=`<span class="chip ${st[1]}">${st[1]==="busy"?'<span class="spin"></span>':""}${st[0]}</span><br>`;
+  if(!j.apply_status||["needs_manual","failed"].includes(j.apply_status))
+    h+=`<button class="doc apply" onclick="startFill('${j.id}')" title="Open the application in a browser on the homelab and fill it in. Nothing is submitted until you approve.">⚡ Auto-fill</button>`;
+  if(["awaiting_review","needs_manual","failed","submitted"].includes(j.apply_status))
+    h+=`<button class="doc" onclick="openApply('${j.id}')">${j.apply_status==="awaiting_review"?"Review &amp; submit":"Details"}</button>`;
+  h+=`<button class="doc" onclick="manualApply('${j.id}')" title="Open the posting and download the PDFs">⤴ Manual</button>`;
+  return h;}
+async function post(url,body){const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})});
+  const d=await r.json().catch(()=>({})); if(!r.ok)throw new Error(d.error||r.statusText); return d;}
+async function startFill(id){try{await post(`/api/jobs/${id}/apply/fill`);loadJobs();}catch(e){flash(e.message,true);}}
+function flash(msg,err){const t=$("apps-toast");t.style.color=err?"var(--bad)":"var(--good)";t.textContent=msg;
+  setTimeout(()=>{if(t.textContent===msg)t.textContent="";},7000);}
+
+async function addJob(){const url=$("add-url").value.trim(); if(!url){toast("add-toast","paste a link first",true);return;}
+  const btn=$("add-btn"); btn.disabled=true;
+  try{await post("/api/jobs/from-url",{url,description:$("add-desc").value});
+    $("add-url").value="";$("add-desc").value="";$("add-desc").classList.add("hide");
+    STATE.filter="all"; toast("add-toast","added. Tailoring now"); loadJobs();}
+  catch(e){toast("add-toast",e.message,true);}
+  btn.disabled=false;}
+async function retryJob(id){const j=STATE.jobs.find(x=>x.id===id); try{await post("/api/jobs/from-url",{url:j.url});loadJobs();}catch(e){flash(e.message,true);}}
+async function removeJob(id){await fetch("/api/jobs/"+id,{method:"DELETE"});loadJobs();}
+
+function triggerDownload(url,filename){const a=document.createElement("a");a.href=url;a.download=filename||"";
+  document.body.appendChild(a);a.click();a.remove();}
+async function manualApply(id){
+  const job=STATE.jobs.find(j=>j.id===id); if(!job)return;
+  // 1) open the posting so you can submit on the employer's site (must be in the click gesture)
+  window.open(job.url,"_blank","noopener");
+  // 2) download the tailored docs, ready to upload
+  if(job.resume_file)triggerDownload(`/pdf/${id}/resume`,job.resume_file);
+  if(job.cover_file)setTimeout(()=>triggerDownload(`/pdf/${id}/cover`,job.cover_file),500);
+  // 3) track it
+  await fetch("/api/jobs/"+id,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({app_status:"applied"})});
+  const t=$("apps-toast"); t.textContent=`Opened posting + downloaded docs for ${job.company} — marked Applied. Submit on the employer's site to finish.`;
+  setTimeout(()=>{if(t)t.textContent="";},6000);
+  loadJobs();}
+async function saveNotes(id,ta){await fetch("/api/jobs/"+id,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({notes:ta.value})});
+  const s=document.getElementById("saved-"+id); s.textContent="saved ✓"; setTimeout(()=>s.textContent="",1500);
+  const job=STATE.jobs.find(j=>j.id===id); if(job)job.notes=ta.value;}
+
+async function loadJobs(){const r=await fetch("/api/jobs");const d=await r.json();
+  STATE.jobs=d.jobs;STATE.summary=d.summary;STATE.pipeline=d.pipeline;
+  renderCards();renderFilters();renderRows();
+  document.getElementById("updated").textContent="updated "+new Date().toLocaleTimeString();}
+
+/* ───── shared list editors (used by profile form and per-job modal) ───── */
+function addEdu(container="edu-list",v={}){document.getElementById(container).appendChild(el(
+  `<div class="editrow"><button class="rm" onclick="this.parentNode.remove()">remove</button>
+   <div class="grid3"><div><label>Degree</label><input type="text" class="f-degree" value="${esc(v.degree)}"></div>
+   <div><label>School</label><input type="text" class="f-school" value="${esc(v.school)}"></div>
+   <div><label>Year</label><input type="text" class="f-year" value="${esc(v.year)}"></div></div></div>`));}
+function collectEdu(container="edu-list"){return [...document.querySelectorAll(`#${container} .editrow`)].map(r=>({
+  degree:r.querySelector(".f-degree").value.trim(),school:r.querySelector(".f-school").value.trim(),
+  year:r.querySelector(".f-year").value.trim()})).filter(e=>e.degree||e.school);}
+
+function addCert(container="cert-list",v=""){
+  if(typeof v==="string")v={name:v};
+  document.getElementById(container).appendChild(el(
+  `<div class="editrow"><button class="rm" onclick="this.parentNode.remove()">remove</button>
+   <div style="padding-right:70px"><label>Certification</label><input type="text" class="f-cname" value="${esc(v.name)}"></div>
+   <div class="grid3"><div><label>Issuer</label><input type="text" class="f-cissuer" value="${esc(v.issuer)}"></div>
+   <div><label>Date</label><input type="text" class="f-cdate" value="${esc(v.date)}"></div>
+   <div><label>Credential ID</label><input type="text" class="f-cid" value="${esc(v.credential_id)}"></div></div>
+   <label style="margin-top:2px"><input type="checkbox" class="f-cfeat" ${v.featured!==false?"checked":""}> Show on resume</label></div>`));}
+function collectCert(container="cert-list"){return [...document.querySelectorAll(`#${container} .editrow`)].map(r=>({
+  name:r.querySelector(".f-cname").value.trim(),
+  issuer:r.querySelector(".f-cissuer").value.trim(),
+  date:r.querySelector(".f-cdate").value.trim(),
+  credential_id:r.querySelector(".f-cid").value.trim(),
+  featured:r.querySelector(".f-cfeat").checked
+})).filter(c=>c.name);}
+
+function addSkill(container="skill-list",cat="",vals=[]){document.getElementById(container).appendChild(el(
+  `<div class="editrow"><button class="rm" onclick="this.parentNode.remove()">remove</button>
+   <div><label>Category</label><input type="text" class="f-cat" value="${esc(cat)}"></div>
+   <div><label>Skills (comma-separated)</label><input type="text" class="f-vals" value="${esc(vals.join(", "))}"></div></div>`));}
+function collectSkill(container="skill-list"){const o={};[...document.querySelectorAll(`#${container} .editrow`)].forEach(r=>{
+  const c=r.querySelector(".f-cat").value.trim();
+  const vals=r.querySelector(".f-vals").value.split(",").map(s=>s.trim()).filter(Boolean);
+  if(c&&vals.length)o[c]=vals;});return o;}
+
+function addExp(container="exp-list",v={}){document.getElementById(container).appendChild(el(
+  `<div class="editrow"><button class="rm" onclick="this.parentNode.remove()">remove</button>
+   <div class="grid3"><div><label>Title</label><input type="text" class="f-title" value="${esc(v.title)}"></div>
+   <div><label>Company</label><input type="text" class="f-company" value="${esc(v.company)}"></div>
+   <div><label>Dates</label><input type="text" class="f-dates" value="${esc(v.dates)}"></div></div>
+   <div><label>Bullets (one per line)</label><textarea class="area f-bullets">${esc((v.bullets||[]).join("\n"))}</textarea></div></div>`));}
+function collectExp(container="exp-list"){return [...document.querySelectorAll(`#${container} .editrow`)].map(r=>({
+  title:r.querySelector(".f-title").value.trim(),company:r.querySelector(".f-company").value.trim(),
+  dates:r.querySelector(".f-dates").value.trim(),
+  bullets:r.querySelector(".f-bullets").value.split("\n").map(s=>s.trim()).filter(Boolean)
+})).filter(e=>e.title||e.company);}
+
+function addProj(container="proj-list",v={}){document.getElementById(container).appendChild(el(
+  `<div class="editrow"><button class="rm" onclick="this.parentNode.remove()">remove</button>
+   <div class="grid2"><div><label>Name</label><input type="text" class="f-name" value="${esc(v.name)}"></div>
+   <div><label>Tech</label><input type="text" class="f-tech" value="${esc(v.tech)}"></div></div>
+   <div><label>Description</label><input type="text" class="f-desc" value="${esc(v.description)}"></div></div>`));}
+function collectProj(container="proj-list"){return [...document.querySelectorAll(`#${container} .editrow`)].map(r=>({
+  name:r.querySelector(".f-name").value.trim(),tech:r.querySelector(".f-tech").value.trim(),
+  description:r.querySelector(".f-desc").value.trim()})).filter(p=>p.name);}
+
+/* ───── Profile form ───── */
+let PROFILE_LOADED=false;
+async function loadProfile(){const p=await (await fetch("/api/profile")).json(); fillProfile(p); PROFILE_LOADED=true;
+  toast("p-toast","loaded");}
+function fillProfile(p){
+  const c=p.contact||{};
+  $("p-name").value=p.name||""; $("p-title").value=p.title||""; $("p-location").value=p.location||""; $("p-target").value=p.target||"";
+  $("c-email").value=c.email||""; $("c-phone").value=c.phone||""; $("c-website").value=c.website||"";
+  $("c-linkedin").value=c.linkedin||""; $("c-github").value=c.github||""; $("p-summary").value=p.summary||"";
+  $("p-aitooling").value=p.ai_tooling||"";
+  $("edu-list").innerHTML=""; (p.education||[]).forEach(e=>addEdu("edu-list",e)); if(!(p.education||[]).length)addEdu();
+  $("cert-list").innerHTML=""; (p.certifications||[]).forEach(c=>addCert("cert-list",c));
+  $("skill-list").innerHTML=""; Object.entries(p.skills||{}).forEach(([k,v])=>addSkill("skill-list",k,v));
+  $("exp-list").innerHTML=""; (p.experience||[]).forEach(e=>addExp("exp-list",e));
+  $("proj-list").innerHTML=""; (p.projects||[]).forEach(pr=>addProj("proj-list",pr));
+  const aa=p.application_answers||{};
+  $("aa-list").innerHTML=AA_FIELDS.map(([k,l,ph])=>`<div><label>${l}</label><input type="text" data-aa="${k}" value="${esc(aa[k]??AA_DEFAULTS[k]??"")}" placeholder="${esc(ph)}"></div>`).join("");
+  $("qa-list").innerHTML=""; (p.qa_bank||[]).forEach(q=>addQA(q));
+}
+const AA_FIELDS=[["address_street","Street address (forms only, never on your resume)","e.g. 123 Main St"],
+  ["address_city","City",""],["address_state","State",""],["address_zip","ZIP",""],["address_county","County",""],["work_authorization","Authorized to work in the US?","e.g. Yes, US citizen"],
+  ["requires_sponsorship","Need visa sponsorship?","e.g. No"],["salary_expectation","Salary expectation","e.g. $120,000"],
+  ["earliest_start","Earliest start date","e.g. Two weeks after offer"],["willing_to_relocate","Willing to relocate?","e.g. No, remote only"],
+  ["how_did_you_hear","How did you hear about us?","e.g. Company careers page"],["gender","Gender (EEO)",""],
+  ["race_ethnicity","Race / ethnicity (EEO)",""],["hispanic_latino","Hispanic / Latino (EEO)",""],
+  ["veteran_status","Veteran status (EEO)",""],["disability_status","Disability status (EEO)",""]];
+const AA_DEFAULTS={gender:"Decline to self-identify",race_ethnicity:"Decline to self-identify",hispanic_latino:"Decline to self-identify",
+  veteran_status:"I don't wish to answer",disability_status:"I don't want to answer"};
+function addQA(v={}){$("qa-list").appendChild(el(
+  `<div class="editrow"><button class="rm" onclick="this.parentNode.remove()">remove</button>
+   <div style="padding-right:70px"><label>Question</label><input type="text" class="f-q" value="${esc(v.question)}"></div>
+   <div><label>Answer</label><textarea class="area f-a" style="min-height:40px">${esc(v.answer)}</textarea></div></div>`));}
+function collectProfile(){return {
+  name:$("p-name").value.trim(),title:$("p-title").value.trim(),location:$("p-location").value.trim(),target:$("p-target").value.trim(),
+  contact:{email:$("c-email").value.trim(),phone:$("c-phone").value.trim(),website:$("c-website").value.trim(),
+    linkedin:$("c-linkedin").value.trim(),github:$("c-github").value.trim()},
+  summary:$("p-summary").value.trim(),
+  ai_tooling:$("p-aitooling").value.trim(),
+  education:collectEdu(),certifications:collectCert(),skills:collectSkill(),
+  experience:collectExp(),projects:collectProj(),
+  application_answers:Object.fromEntries([...document.querySelectorAll("[data-aa]")].map(i=>[i.dataset.aa,i.value.trim()])),
+  qa_bank:[...document.querySelectorAll("#qa-list .editrow")].map(r=>({question:r.querySelector(".f-q").value.trim(),
+    answer:r.querySelector(".f-a").value.trim()})).filter(q=>q.question&&q.answer)};}
+async function saveProfile(){const body=collectProfile();
+  const r=await fetch("/api/profile",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  if(r.ok)toast("p-toast","saved ✓"); else toast("p-toast","save failed",true);}
+
+/* ───── Import from links ───── */
+async function runImport(){
+  const body={website:$("imp-website").value.trim(),github:$("imp-github").value.trim(),linkedin:$("imp-linkedin").value.trim()};
+  if(!body.website&&!body.github&&!body.linkedin){toast("imp-status","enter at least one link",true);return;}
+  const btn=document.getElementById("imp-run"); btn.disabled=true; document.getElementById("imp-status").textContent="crawling…";
+  document.getElementById("imp-result").innerHTML="";
+  try{
+    const r=await fetch("/api/profile/import",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+    const d=await r.json(); document.getElementById("imp-status").textContent="";
+    if(d.error){toast("imp-status",d.error,true);btn.disabled=false;return;}
+    renderImport(d);
+  }catch(e){toast("imp-status","error: "+e,true);}
+  btn.disabled=false;
+}
+function renderImport(d){
+  const s=d.sources||{}; const sourceHtml=Object.entries(s).map(([k,v])=>{
+    const cls=v.startsWith("ok")?"ok":v.startsWith("blocked")?"warnc":"bad";
+    return `<div class="srcline"><b>${k}</b>: <span class="${cls}">${esc(v)}</span></div>`;}).join("");
+  const sg=d.suggestions||{}; const counts=[];
+  if(sg.education?.length)counts.push(sg.education.length+" education");
+  if(sg.certifications?.length)counts.push(sg.certifications.length+" certs");
+  if(sg.projects?.length)counts.push(sg.projects.length+" projects");
+  if(sg.experience?.length)counts.push(sg.experience.length+" jobs");
+  if(sg.skills&&Object.keys(sg.skills).length)counts.push(Object.keys(sg.skills).length+" skill groups");
+  if(sg.summary)counts.push("a summary");
+  window._LAST_SUGGEST=sg;
+  document.getElementById("imp-result").innerHTML=
+    sourceHtml+`<div style="margin-top:10px">${counts.length?("Found: "+counts.join(", ")+
+      ' <button class="btn ghost" onclick="applySuggest()">Apply to form below ↓</button>'+
+      '<div class="sub" style="margin-top:6px">Review the fields below, then click <b>Save profile</b>.</div>')
+      :'<span class="muted">No structured facts could be extracted. LinkedIn usually blocks crawling — add those manually.</span>'}</div>`;
+}
+function applySuggest(){const sg=window._LAST_SUGGEST||{};
+  (sg.education||[]).forEach(e=>addEdu("edu-list",e));
+  (sg.certifications||[]).forEach(c=>addCert("cert-list",c));
+  (sg.projects||[]).forEach(p=>addProj("proj-list",p));
+  (sg.experience||[]).forEach(e=>addExp("exp-list",e));
+  Object.entries(sg.skills||{}).forEach(([k,v])=>addSkill("skill-list",k,v));
+  if(sg.summary&&!$("p-summary").value.trim())$("p-summary").value=sg.summary;
+  toast("p-toast","applied — review & Save");
+  document.getElementById("view-profile").querySelector(".section:nth-child(2)").scrollIntoView({behavior:"smooth"});
+}
+
+/* ───── per-job resume modal ───── */
+async function openResume(id){
+  const r=await fetch(`/api/jobs/${id}/resume`); if(!r.ok){alert("No editable content for this job");return;}
+  const d=await r.json(); CURRENT_JOB=id;
+  document.getElementById("m-sub").textContent=`${d.company} — ${d.title}`;
+  const res=d.resume||{};
+  $("m-summary").value=res.summary||"";
+  $("m-exp").innerHTML=""; (res.experience||[]).forEach(e=>addExp("m-exp",e)); if(!(res.experience||[]).length)addExp("m-exp");
+  $("m-skill").innerHTML=""; Object.entries(res.skills||{}).forEach(([k,v])=>addSkill("m-skill",k,v));
+  $("m-proj").innerHTML=""; (res.projects||[]).forEach(p=>addProj("m-proj",p));
+  $("m-cover").value=d.cover_letter||"";
+  document.getElementById("modal-bg").classList.remove("hide");
+}
+function closeModal(){document.getElementById("modal-bg").classList.add("hide");CURRENT_JOB=null;}
+async function saveResume(){
+  const body={resume:{summary:$("m-summary").value.trim(),experience:collectExp("m-exp"),
+    skills:collectSkill("m-skill"),projects:collectProj("m-proj")}, cover_letter:$("m-cover").value};
+  const btn=document.getElementById("m-save"); btn.disabled=true; toast("m-toast","rendering…");
+  const r=await fetch(`/api/jobs/${CURRENT_JOB}/resume`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  btn.disabled=false;
+  if(r.ok){toast("m-toast","saved & re-rendered ✓"); setTimeout(()=>{closeModal();loadJobs();},700);}
+  else{const d=await r.json().catch(()=>({})); toast("m-toast",d.error||"failed",true);}
+}
+
+async function uploadResume(input){const f=input.files[0]; if(!f)return;
+  $("imp-status").textContent="reading "+f.name+" (about 30 seconds)"; $("imp-result").innerHTML="";
+  const fd=new FormData(); fd.append("file",f);
+  try{const r=await fetch("/api/profile/resume",{method:"POST",body:fd}); const d=await r.json();
+    $("imp-status").textContent=""; if(!r.ok)throw new Error(d.error||"upload failed");
+    if(!PROFILE_LOADED)await loadProfile(); renderImport(d);}
+  catch(e){toast("imp-status",e.message,true);}
+  input.value="";}
+
+/* ───── apply review modal ───── */
+let AP_JOB=null, AP_DATA=null;
+async function openApply(id){AP_JOB=id; await refreshApply(true); $("ap-bg").classList.remove("hide");}
+function closeApply(){$("ap-bg").classList.add("hide"); AP_JOB=null;}
+async function refreshApply(force){const d=await (await fetch(`/api/jobs/${AP_JOB}/apply`)).json();
+  if(!force&&AP_DATA&&d.apply_updated===AP_DATA.apply_updated)return;
+  AP_DATA=d; const fd=d.apply_fields||{}; const st=AP_LABELS[d.apply_status]||["",""];
+  $("ap-title").textContent=`Apply: ${d.company}`; $("ap-sub").innerHTML=`${esc(d.title)} · <a href="${esc(fd.page_url||d.apply_url||d.url)}" target="_blank" rel="noopener">application page ↗</a>`;
+  const nflag=(fd.fields||[]).filter(f=>f.needs_review).length;
+  $("ap-state").innerHTML=`<span class="chip ${st[1]}">${st[0]}</span> `+
+    (d.apply_status==="awaiting_review"?(nflag?`<span class="warnc">${nflag} highlighted field(s) need your answer. Check the rest, then approve.</span>`
+      :`<span class="sub">Everything's filled in. Check the answers, then approve. The worker re-fills the form with exactly these answers and clicks Submit.</span>`):"");
+  const shots=(fd.after_screenshot&&["submitted","needs_manual"].includes(d.apply_status))?[fd.after_screenshot]:(fd.screenshots||(fd.screenshot?[fd.screenshot]:[]));
+  const t=encodeURIComponent(d.apply_updated||"");
+  $("ap-shots").innerHTML=shots.map((s,i)=>`<a href="/apply-shot/${AP_JOB}/${s}?t=${t}" target="_blank">
+    ${shots.length>1?`<div class="sub">Step ${i+1}</div>`:""}<img class="shot" src="/apply-shot/${AP_JOB}/${s}?t=${t}" alt="Screenshot of the filled form"></a>`).join("");
+  $("ap-fields").innerHTML=(fd.fields||[]).map(fieldRow).join("")||`<tr><td class="muted">No form fields captured.</td></tr>`;
+  $("ap-log").textContent=d.apply_log||"";
+  const canSubmit=d.apply_status==="awaiting_review"; $("ap-submit").disabled=!canSubmit;}
+function fieldRow(f){const v=f.value??""; let input;
+  if(f.kind==="file") input=`<span class="sub">${v?("📎 tailored "+(v==="resume"?"resume":"cover letter")+" PDF"):"(nothing attached)"}</span>`;
+  else if(f.kind==="combobox"){const dl="dl-"+Math.random().toString(36).slice(2);
+    input=`<input type="text" class="fld" list="${dl}" data-k="${esc(f.key)}" value="${esc(v)}" placeholder="type anything. Suggestions are optional"><datalist id="${dl}">${(f.options||[]).slice(0,200).map(o=>`<option value="${esc(o)}">`).join("")}</datalist>`;}
+  else if(f.options&&f.options.length&&f.kind!=="checkbox") input=`<select class="fld" data-k="${esc(f.key)}"><option value=""></option>${f.options.map(o=>`<option ${o===v?"selected":""}>${esc(o)}</option>`).join("")}</select>`;
+  else if(f.kind==="textarea"||String(v).length>90) input=`<textarea class="fld area" data-k="${esc(f.key)}">${esc(Array.isArray(v)?v.join(" | "):v)}</textarea>`;
+  else input=`<input type="text" class="fld" data-k="${esc(f.key)}" value="${esc(Array.isArray(v)?v.join(" | "):v)}">`;
+  return `<tr class="${f.needs_review?"flag":""}"><td class="q">${f.step>1?`<span class="chip">step ${f.step}</span>`:""}${esc(f.label)}${f.required?' <span class="req">*</span>':""}
+    <div class="src ${f.source}">${esc(f.source||"")}</div></td>
+    <td>${input}${f.note?`<div class="note">${esc(f.note)}</div>`:""}${f.fill_error?`<div class="note bad">${esc(f.fill_error)}</div>`:""}</td></tr>`;}
+function collectAnswers(){const o={}; document.querySelectorAll("#ap-fields [data-k]").forEach(i=>{
+  const f=(AP_DATA.apply_fields.fields||[]).find(x=>x.key===i.dataset.k); let v=i.value;
+  if(f&&f.kind==="checkbox"&&f.options.length>1)v=v.split("|").map(s=>s.trim()).filter(Boolean);
+  o[i.dataset.k]=v;}); return o;}
+async function saveAnswers(){try{await post(`/api/jobs/${AP_JOB}/apply/answers`,{answers:collectAnswers()});toast("ap-toast","saved ✓");await refreshApply(true);}
+  catch(e){toast("ap-toast",e.message,true);}}
+async function refill(){try{await post(`/api/jobs/${AP_JOB}/apply/answers`,{answers:collectAnswers()});
+  await post(`/api/jobs/${AP_JOB}/apply/fill`);toast("ap-toast","re-filling…");loadJobs();setTimeout(()=>refreshApply(true),800);}
+  catch(e){toast("ap-toast",e.message,true);}}
+async function approveSubmit(){
+  if(!confirmSubmit())return;
+  try{await post(`/api/jobs/${AP_JOB}/apply/submit`,{answers:collectAnswers(),remember:$("ap-remember").checked});
+    toast("ap-toast","submitting. Watch for the confirmation screenshot"); loadJobs(); setTimeout(()=>refreshApply(true),800);}
+  catch(e){toast("ap-toast",e.message,true);}}
+function confirmSubmit(){const b=$("ap-submit"); if(b.dataset.armed){delete b.dataset.armed;b.textContent="Approve & submit";return true;}
+  b.dataset.armed="1"; b.textContent="Click again to submit to "+(AP_DATA.company||"employer");
+  setTimeout(()=>{if(b.dataset.armed){delete b.dataset.armed;b.textContent="Approve & submit";}},5000); return false;}
+
+function toast(id,msg,err){const t=document.getElementById(id);t.textContent=msg;t.className="toast"+(err?" err":"");
+  if(!err)setTimeout(()=>{if(t.textContent===msg)t.textContent="";},2500);}
+
+let LAST_POLL=0;
+function busy(){return STATE.jobs.some(j=>j.status==="processing"||["fill_requested","filling","submit_requested","submitting"].includes(j.apply_status));}
+loadJobs(); setInterval(()=>{const now=Date.now();
+  if(document.getElementById("view-apps").classList.contains("hide"))return;
+  if(busy()||now-LAST_POLL>60000){LAST_POLL=now;loadJobs();}
+  if(AP_JOB&&busy())refreshApply();},4000);
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{
+  "name": "Alex Rivera",
+  "title": "Full Stack Engineer",
+  "location": "Austin, TX (Remote)",
+  "target": "Remote, $130K+, Senior Full Stack / Frontend",
+  "contact": {"email": "alex.rivera@example.com", "phone": "(512) 555-0142",
+              "website": "alexrivera.dev", "linkedin": "linkedin.com/in/alex-rivera-demo",
+              "github": "github.com/alex-rivera-demo"},
+  "summary": "Full stack engineer with 7 years building React and Node.js products, most recently leading the web platform at a B2B logistics startup.",
+  "ai_tooling": "Ships LLM features in production (retrieval, structured outputs, evals); daily user of AI coding assistants with a review-first workflow.",
+  "education": [{"degree": "B.S. Computer Science", "school": "Texas State University", "year": "2017"}],
+  "certifications": [{"name": "AWS Certified Developer – Associate", "issuer": "Amazon Web Services", "date": "2023", "credential_id": "", "featured": true}],
+  "skills": {"Frontend": ["React", "TypeScript", "Next.js", "Tailwind CSS", "Accessibility"],
+             "Backend": ["Node.js", "PostgreSQL", "GraphQL", "Redis", "Python"],
+             "Cloud": ["AWS", "Docker", "Terraform", "GitHub Actions"],
+             "AI": ["Claude API", "RAG", "Evals"]},
+  "experience": [
+    {"title": "Senior Full Stack Engineer", "company": "Freightline (logistics SaaS)", "dates": "2022 – Present",
+     "bullets": ["Led a 4-person team rebuilding the shipper dashboard in Next.js + TypeScript; page loads dropped from 4.1s to 1.3s.",
+                 "Designed a GraphQL gateway over 6 services, cutting frontend API calls per page by 60%.",
+                 "Shipped an LLM-powered freight-quote assistant using retrieval over 200K past quotes, with an eval suite gating releases.",
+                 "Mentored 3 junior engineers; introduced RFC-based design reviews."]},
+    {"title": "Full Stack Engineer", "company": "Brightpath Health", "dates": "2019 – 2022",
+     "bullets": ["Built patient-scheduling features in React and Node.js used by 40 clinics.",
+                 "Migrated a monolith's reporting module to a PostgreSQL read replica, removing nightly timeouts.",
+                 "Owned WCAG 2.1 AA accessibility fixes across the patient portal."]},
+    {"title": "Software Engineer", "company": "Cobalt Agency", "dates": "2017 – 2019",
+     "bullets": ["Delivered 12 client web apps in React and Express on fixed timelines.",
+                 "Set up the agency's first CI pipeline and Docker-based dev environments."]}
+  ],
+  "projects": [
+    {"name": "Trailmix", "tech": "Next.js, Mapbox, PostgreSQL", "description": "Open-source trip planner with 1.2K GitHub stars."},
+    {"name": "promptdiff", "tech": "TypeScript, CLI", "description": "CLI that diffs LLM outputs across prompt versions for regression testing."}
+  ],
+  "application_answers": {
+    "work_authorization": "Yes — US citizen",
+    "requires_sponsorship": "No",
+    "salary_expectation": "",
+    "earliest_start": "Two weeks after offer",
+    "willing_to_relocate": "No — remote only",
+    "how_did_you_hear": "Company careers page",
+    "gender": "Decline to self-identify",
+    "race_ethnicity": "Decline to self-identify",
+    "hispanic_latino": "Decline to self-identify",
+    "veteran_status": "I don't wish to answer",
+    "disability_status": "I don't want to answer"
+  },
+  "qa_bank": []
+}
