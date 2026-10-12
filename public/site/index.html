@@ -3,11 +3,144 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ApplyPilot</title>
-<meta name="description" content="ApplyPilot reads a job posting, tailors a resume and cover letter from real facts, fills the application form, and waits for your approval before it submits.">
-<meta property="og:title" content="ApplyPilot">
+<title>ApplyPilot — AI Job Application Assistant with Human Approval</title>
+<meta name="description" content="ApplyPilot is an open-source AI job application assistant. It tailors your resume and cover letter from real facts, fills the form, and waits for your approval.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Michael Cooper">
+<meta name="theme-color" content="#E6EBEF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101B27" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="ApplyPilot — AI Job Application Assistant with Human Approval">
 <meta property="og:description" content="An AI job-application copilot that never submits without your sign-off.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='9' width='26' height='14' rx='2' fill='%23F2E4B6' stroke='%2316263A' stroke-width='2'/%3E%3Crect x='3' y='9' width='6' height='14' fill='%23FF4F00'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ApplyPilot">
+<meta property="og:locale" content="en_US">
+<link rel="canonical" href="https://applypilot.cc/">
+<meta property="og:url" content="https://applypilot.cc/">
+<meta property="og:image" content="https://applypilot.cc/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta property="og:image:alt" content="ApplyPilot: paste a job link, check its work, it applies.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ApplyPilot — AI Job Application Assistant with Human Approval">
+<meta name="twitter:description" content="An AI job-application copilot that never submits without your sign-off.">
+<meta name="twitter:image" content="https://applypilot.cc/og.jpg">
+<meta name="twitter:image:alt" content="ApplyPilot: paste a job link, check its work, it applies.">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebSite",
+   "@id": "https://applypilot.cc/#website",
+   "url": "https://applypilot.cc/",
+   "name": "ApplyPilot",
+   "description": "ApplyPilot is an open-source AI job application assistant. It tailors your resume and cover letter from real facts, fills the form, and waits for your approval.",
+   "inLanguage": "en-US",
+   "publisher": {
+    "@id": "https://www.mycodedojo.com/#person"
+   }
+  },
+  {
+   "@type": "SoftwareApplication",
+   "@id": "https://applypilot.cc/#app",
+   "name": "ApplyPilot",
+   "url": "https://applypilot.cc/",
+   "description": "ApplyPilot is an open-source AI job application assistant. It tailors your resume and cover letter from real facts, fills the form, and waits for your approval.",
+   "applicationCategory": "BusinessApplication",
+   "applicationSubCategory": "Job application assistant",
+   "operatingSystem": "Linux (Docker)",
+   "image": "https://applypilot.cc/og.jpg",
+   "screenshot": "https://applypilot.cc/demo/fill.png",
+   "license": "https://opensource.org/licenses/MIT",
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+   },
+   "featureList": [
+    "Reads Greenhouse, Lever and Ashby job postings",
+    "Scores your fit for each role",
+    "Tailors your resume and cover letter from real profile facts",
+    "Fills application forms in a real browser",
+    "Submits only after you approve every answer"
+   ],
+   "author": {
+    "@id": "https://www.mycodedojo.com/#person"
+   },
+   "sameAs": [
+    "https://github.com/mcooper7649/applypilot"
+   ]
+  },
+  {
+   "@type": "Person",
+   "@id": "https://www.mycodedojo.com/#person",
+   "name": "Michael Cooper",
+   "url": "https://www.mycodedojo.com/",
+   "sameAs": [
+    "https://github.com/mcooper7649",
+    "https://www.linkedin.com/in/mcooper305/"
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "@id": "https://applypilot.cc/#faq",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "What is ApplyPilot?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "ApplyPilot is an open-source AI job application assistant. Paste a job link and it reads the posting, scores your fit, tailors your resume and cover letter, and fills the employer's application form in a real browser. Then it stops and waits for you to review every answer."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Does ApplyPilot submit job applications automatically?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No. Filling is automatic, but submitting is not. Nothing is sent to an employer until you've reviewed the answers and approved them, and anything the assistant isn't sure about is flagged for you first."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Which job application sites does it work with?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Greenhouse, Lever and Ashby postings are read straight from their public APIs. Forms are filled by reading each field's label in a real Chromium browser, so it also handles many custom application forms."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Will the AI make things up on my resume?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No. Your experience can be reordered and reworded for the role, but nothing can be added to it. Education, certifications and contact details are copied from your profile, and questions like work authorization, sponsorship and salary are only answered from values you've set."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "What happens with CAPTCHAs and email verification codes?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "They go to you. ApplyPilot never tries to get around a CAPTCHA. It pauses the application and shows you the live page so you can finish that step yourself, and verification codes are typed in from the dashboard."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Can I use ApplyPilot myself?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The code is on GitHub under the MIT license. It's built to run on your own server with Docker and your own Claude API key. There's no hosted sign-up."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -52,6 +185,8 @@ section { padding:96px 0; border-top:1px solid var(--rule); }
 .top nav { margin-left:auto; display:flex; gap:22px; font-size:15px; }
 .top nav a { text-decoration:none; color:var(--ink-2); }
 .top nav a:hover { color:var(--ink); }
+.top .signin { font-size:15px; font-weight:600; text-decoration:none; padding:7px 14px; border:2px solid var(--ink); border-radius:4px; }
+.top .signin:hover { background:var(--ink); color:var(--page); }
 
 /* ── hero ── */
 .hero { display:grid; grid-template-columns:1.3fr 1fr; gap:56px; align-items:center; padding:56px 0 96px; }
@@ -107,10 +242,10 @@ section { padding:96px 0; border-top:1px solid var(--rule); }
 .chips { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 16px; padding:0; list-style:none; }
 .chips li { font-size:13px; border:1px solid var(--rule); border-radius:3px; padding:2px 8px; background:var(--page); }
 .docs { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:22px; align-items:start; }
-.docs img { width:100%; border:1px solid var(--rule); border-radius:3px; background:#fff; box-shadow:0 1px 0 var(--rule); }
+.docs img { width:100%; height:auto; border:1px solid var(--rule); border-radius:3px; background:#fff; box-shadow:0 1px 0 var(--rule); }
 .docs blockquote { margin:0; font-size:15px; color:var(--ink-2); border-left:3px solid var(--rule); padding-left:14px; }
 .formshot { max-height:420px; overflow:auto; border:1px solid var(--rule); border-radius:3px; }
-.formshot img { width:100%; display:block; }
+.formshot img { width:100%; height:auto; display:block; }
 .ftab { width:100%; border-collapse:collapse; font-size:14px; }
 .ftab td { padding:7px 6px; border-bottom:1px solid var(--rule); vertical-align:top; }
 .ftab td:first-child { color:var(--ink-2); width:44%; }
@@ -161,6 +296,14 @@ details.table td, details.table th { border-bottom:1px solid var(--rule); paddin
 .stack { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:26px 40px; margin-top:36px; }
 .stack h3 { font-size:21px; margin-bottom:6px; }
 .stack p { font-size:15px; color:var(--ink-2); }
+.faqs { margin-top:36px; max-width:820px; border-top:1px solid var(--rule); }
+details.faq { border-bottom:1px solid var(--rule); }
+details.faq summary { cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; gap:16px; padding:18px 0; }
+details.faq summary::-webkit-details-marker { display:none; }
+details.faq summary::after { content:"+"; font-family:var(--display); font-size:28px; line-height:1; color:var(--ink-3); }
+details.faq[open] summary::after { content:"\2212"; }
+details.faq h3 { font-size:22px; margin:0; }
+details.faq p { color:var(--ink-2); font-size:16px; margin:0 0 20px; max-width:70ch; }
 footer { padding:72px 0 90px; border-top:2px solid var(--ink); }
 footer h2 { margin-bottom:18px; }
 footer .fine { font-size:13px; color:var(--ink-3); margin-top:40px; }
@@ -174,7 +317,7 @@ footer .fine { font-size:13px; color:var(--ink-3); margin-top:40px; }
   .replay [role=tab][aria-selected=true] { border-bottom-color:var(--go); }
   .replay [role=tab] span { display:none; }
   .frow { grid-template-columns:1fr; gap:2px; } .tip { display:none; }
-  .top nav { display:none; }
+  .top nav { display:none; } .top .signin { margin-left:auto; }
   section { padding:68px 0; }
 }
 </style>
@@ -183,14 +326,15 @@ footer .fine { font-size:13px; color:var(--ink-3); margin-top:40px; }
 <div class="wrap">
   <header class="top">
     <a class="mark" href="#"><i aria-hidden="true"></i>ApplyPilot</a>
-    <nav aria-label="Sections"><a href="#how">How it works</a><a href="#replay">A real run</a><a href="#checklist">Guardrails</a><a href="#log">Live log</a></nav>
+    <nav aria-label="Sections"><a href="#how">How it works</a><a href="#replay">A real run</a><a href="#checklist">Guardrails</a><a href="#log">Live log</a><a href="#faq">FAQ</a></nav>
+    <a class="signin" href="https://jobs.mycodedojo.com/login">Sign in</a>
   </header>
 
   <main>
   <div class="hero">
     <div>
       <h1><span>Paste a job link.</span><span>Check its work.</span><span>It applies.</span></h1>
-      <p class="lead">ApplyPilot reads the posting, rewrites your resume and cover letter around it using only facts you've given it, fills the employer's application form, and then stops. Nothing goes out until you've reviewed every answer.</p>
+      <p class="lead">ApplyPilot is an open-source AI job application assistant. It reads the posting, rewrites your resume and cover letter around it using only facts you've given it, fills the employer's application form, and then stops. Nothing goes out until you've reviewed every answer.</p>
       <div class="ctas">
         <a class="btn primary" href="#replay">Watch a real run</a>
         <a class="btn" href="https://github.com/mcooper7649/applypilot">Read the code</a>
@@ -257,7 +401,7 @@ footer .fine { font-size:13px; color:var(--ink-3); margin-top:40px; }
         <div class="pane" role="tabpanel" id="p3" aria-labelledby="t3" hidden>
           <h3>Tailor the documents</h3>
           <div class="docs" style="margin-top:18px">
-            <a href="demo/Alex_Rivera_Resume.pdf" target="_blank" rel="noopener"><img src="demo/Alex_Rivera_Resume.png" alt="First page of the tailored resume for Alex Rivera" loading="lazy"></a>
+            <a href="demo/Alex_Rivera_Resume.pdf" target="_blank" rel="noopener"><img src="demo/Alex_Rivera_Resume.png" alt="First page of the tailored resume for Alex Rivera" width="935" height="1210" loading="lazy"></a>
             <div>
               <p style="font-size:15px">The summary and bullet order are rewritten for this role. The facts aren't: every employer, date and number comes from Alex's profile.</p>
               <div style="font-size:14px;color:var(--ink-3);margin-bottom:6px">Cover letter, opening</div>
@@ -270,7 +414,7 @@ footer .fine { font-size:13px; color:var(--ink-3); margin-top:40px; }
           <h3>Fill the employer's form</h3>
           <p style="margin-top:12px" id="r-fillsum"></p>
           <div class="split">
-            <div class="formshot" tabindex="0" aria-label="Screenshot of the filled application form, scrollable"><img src="demo/fill.png" alt="The Northwind Labs application form, filled in by ApplyPilot" loading="lazy"></div>
+            <div class="formshot" tabindex="0" aria-label="Screenshot of the filled application form, scrollable"><img src="demo/fill.png" alt="The Northwind Labs application form, filled in by ApplyPilot" width="1100" height="1741" loading="lazy"></div>
             <table class="ftab"><tbody id="r-fields"></tbody></table>
           </div>
         </div>
@@ -345,6 +489,20 @@ footer .fine { font-size:13px; color:var(--ink-3); margin-top:40px; }
       <div><h3>Python, Flask, SQLite</h3><p>One small database tracks each application from posting to offer. The dashboard and the worker hand jobs to each other through it.</p></div>
       <div><h3>WeasyPrint</h3><p>Resumes and cover letters are HTML templates rendered to PDF, so any edit re-renders instantly with no model call.</p></div>
       <div><h3>Self-hosted</h3><p>Docker containers on a home server behind Caddy. This public page reads a read-only copy of the data and can't reach anything else.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Questions, answered</h2>
+    <div class="faqs">
+      <details class="faq"><summary><h3>What is ApplyPilot?</h3></summary><p>ApplyPilot is an open-source AI job application assistant. Paste a job link and it reads the posting, scores your fit, tailors your resume and cover letter, and fills the employer's application form in a real browser. Then it stops and waits for you to review every answer.</p></details>
+      <details class="faq"><summary><h3>Does ApplyPilot submit job applications automatically?</h3></summary><p>No. Filling is automatic, but submitting is not. Nothing is sent to an employer until you've reviewed the answers and approved them, and anything the assistant isn't sure about is flagged for you first.</p></details>
+      <details class="faq"><summary><h3>Which job application sites does it work with?</h3></summary><p>Greenhouse, Lever and Ashby postings are read straight from their public APIs. Forms are filled by reading each field's label in a real Chromium browser, so it also handles many custom application forms.</p></details>
+      <details class="faq"><summary><h3>Will the AI make things up on my resume?</h3></summary><p>No. Your experience can be reordered and reworded for the role, but nothing can be added to it. Education, certifications and contact details are copied from your profile, and questions like work authorization, sponsorship and salary are only answered from values you've set.</p></details>
+      <details class="faq"><summary><h3>What happens with CAPTCHAs and email verification codes?</h3></summary><p>They go to you. ApplyPilot never tries to get around a CAPTCHA. It pauses the application and shows you the live page so you can finish that step yourself, and verification codes are typed in from the dashboard.</p></details>
+      <details class="faq"><summary><h3>Can I use ApplyPilot myself?</h3></summary><p>The code is on GitHub under the MIT license. It's built to run on your own server with Docker and your own Claude API key. There's no hosted sign-up.</p></details>
     </div>
   </div>
 </section>
