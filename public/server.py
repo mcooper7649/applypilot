@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 ApplyPilot public API — read-only, anonymized view of the job-bot database for
-applypilot.mycodedojo.com.
+applypilot.cc.
 
 Runs in its own container with only this directory and data/ (read-only)
 mounted: it can't reach the dashboard, the worker, the profile editor or the

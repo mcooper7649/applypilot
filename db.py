@@ -38,7 +38,7 @@ EXTRA_COLUMNS = {
     "apply_status": "TEXT", "apply_fields": "TEXT", "apply_log": "TEXT",
     "apply_updated": "TEXT",
     # public showcase: anonymized role/industry (public_meta.py) + per-job opt-in
-    # to show the company name on applypilot.mycodedojo.com
+    # to show the company name on applypilot.cc
     "public_meta": "TEXT", "show_public": "INTEGER DEFAULT 0",
 }
 

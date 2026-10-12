@@ -8,7 +8,7 @@ employer's application form in a real browser, and then stops. Nothing is
 submitted until you've reviewed every answer and approved it.
 
 Live page with a walkthrough and an anonymized log of my own job search:
-**https://applypilot.mycodedojo.com**
+**https://applypilot.cc**
 
 ![Filled application form from the demo run](public/site/demo/fill.png)
 
@@ -58,7 +58,7 @@ Live page with a walkthrough and an anonymized log of my own job search:
                    │ read-only
                    ▼
             ┌──────────────┐
-            │ public API   │ ──▶ applypilot.mycodedojo.com (anonymized log)
+            │ public API   │ ──▶ applypilot.cc (anonymized log)
             │ Flask :8041  │
             └──────────────┘
 ```
