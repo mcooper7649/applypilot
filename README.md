@@ -10,7 +10,7 @@ submitted until you've reviewed every answer and approved it.
 Live page with a walkthrough and an anonymized log of my own job search:
 **https://applypilot.cc**
 
-![Filled application form from the demo run](public/site/demo/fill.png)
+![The ApplyPilot dashboard (demo data)](public/site/ui/dashboard.jpg)
 
 ## How it works
 

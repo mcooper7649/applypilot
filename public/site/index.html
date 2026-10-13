@@ -53,7 +53,11 @@
    "applicationSubCategory": "Job application assistant",
    "operatingSystem": "Linux (Docker)",
    "image": "https://applypilot.cc/og.jpg",
-   "screenshot": "https://applypilot.cc/demo/fill.png",
+   "screenshot": [
+    "https://applypilot.cc/ui/dashboard.jpg",
+    "https://applypilot.cc/ui/review.jpg",
+    "https://applypilot.cc/demo/fill.png"
+   ],
    "license": "https://opensource.org/licenses/MIT",
    "offers": {
     "@type": "Offer",
@@ -304,12 +308,23 @@ details.faq summary::after { content:"+"; font-family:var(--display); font-size:
 details.faq[open] summary::after { content:"\2212"; }
 details.faq h3 { font-size:22px; margin:0; }
 details.faq p { color:var(--ink-2); font-size:16px; margin:0 0 20px; max-width:70ch; }
+.uishot { margin:0; }
+.uishot .frame { border:2px solid var(--ink); border-radius:6px; overflow:hidden; background:#0f1419; box-shadow:0 2px 0 var(--rule); }
+.uishot .frame img { display:block; width:100%; height:auto; }
+.uishot.main { margin-top:40px; }
+.uishot figcaption { margin-top:12px; font-size:15px; color:var(--ink-2); max-width:62ch; }
+.uishot figcaption b { color:var(--ink); }
+.uigrid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:44px 36px; margin-top:52px; align-items:start; }
+.uishot .crop { max-height:520px; position:relative; }
+.uishot .crop::after { content:""; position:absolute; left:0; right:0; bottom:0; height:90px;
+  background:linear-gradient(rgba(15,20,25,0), #0f1419); }
+.uishot .narrow { max-width:380px; }
 footer { padding:72px 0 90px; border-top:2px solid var(--ink); }
 footer h2 { margin-bottom:18px; }
 footer .fine { font-size:13px; color:var(--ink-3); margin-top:40px; }
 
 @media (max-width:900px) {
-  .hero, .replay, .split, .docs { grid-template-columns:1fr; }
+  .hero, .replay, .split, .docs, .uigrid { grid-template-columns:1fr; }
   .steps { grid-template-columns:1fr; border-top:0; border-left:2px solid var(--ink); margin-left:17px; }
   .steps li { padding:0 0 22px 32px; } .steps li::before { left:-18px; top:0; } .steps h3 { margin-top:4px; }
   .replay [role=tablist] { flex-direction:row; overflow-x:auto; }
@@ -326,7 +341,7 @@ footer .fine { font-size:13px; color:var(--ink-3); margin-top:40px; }
 <div class="wrap">
   <header class="top">
     <a class="mark" href="#"><i aria-hidden="true"></i>ApplyPilot</a>
-    <nav aria-label="Sections"><a href="#how">How it works</a><a href="#replay">A real run</a><a href="#checklist">Guardrails</a><a href="#log">Live log</a><a href="#faq">FAQ</a></nav>
+    <nav aria-label="Sections"><a href="#how">How it works</a><a href="#replay">A real run</a><a href="#inside">Dashboard</a><a href="#checklist">Guardrails</a><a href="#log">Live log</a><a href="#faq">FAQ</a></nav>
     <a class="signin" href="https://jobs.applypilot.cc/login">Sign in</a>
   </header>
 
@@ -428,6 +443,35 @@ footer .fine { font-size:13px; color:var(--ink-3); margin-top:40px; }
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="inside">
+  <div class="wrap">
+    <h2>Inside the dashboard</h2>
+    <p class="lead" style="margin-top:14px;max-width:760px">One screen for every application: the fit score, the tailored resume and cover letter, and exactly where each form stands. The screenshots use the same fictional candidate as the walkthrough above.</p>
+    <figure class="uishot main">
+      <div class="frame"><a href="ui/dashboard.jpg" target="_blank" rel="noopener" title="Open full size"><img src="ui/dashboard-sm.jpg" srcset="ui/dashboard-sm.jpg 1360w, ui/dashboard.jpg 2720w" sizes="(max-width: 1120px) 100vw, 1072px" width="1360" height="860" alt="The ApplyPilot dashboard listing applications with fit scores, documents and each form's status" loading="lazy"></a></div>
+      <figcaption><b>The tracker.</b> Each job shows its fit score, its tailored documents and what the application is waiting on.</figcaption>
+    </figure>
+    <div class="uigrid">
+      <figure class="uishot">
+        <div class="frame crop"><a href="ui/review.jpg" target="_blank" rel="noopener" title="Open full size"><img src="ui/review-sm.jpg" srcset="ui/review-sm.jpg 1000w, ui/review.jpg 2000w" sizes="(max-width: 900px) 100vw, 540px" width="1000" height="1351" alt="Reviewing a filled application: each answer is labelled with its source, and the salary and essay questions are highlighted" loading="lazy"></a></div>
+        <figcaption><b>Review before anything is sent.</b> Every answer says where it came from. Anything drafted by AI or still unknown is highlighted for you.</figcaption>
+      </figure>
+      <figure class="uishot">
+        <div class="frame narrow"><a href="ui/notifications.jpg" target="_blank" rel="noopener" title="Open full size"><img src="ui/notifications-sm.jpg" srcset="ui/notifications-sm.jpg 380w, ui/notifications.jpg 760w" sizes="380px" width="380" height="459" alt="The notifications panel: an email code request, an application ready for review and two submissions" loading="lazy"></a></div>
+        <figcaption><b>Notifications.</b> In the dashboard and in your browser, so a verification code or a CAPTCHA doesn't time out while you're away.</figcaption>
+      </figure>
+      <figure class="uishot">
+        <div class="frame"><a href="ui/code.jpg" target="_blank" rel="noopener" title="Open full size"><img src="ui/code-sm.jpg" srcset="ui/code-sm.jpg 1000w, ui/code.jpg 2000w" sizes="(max-width: 900px) 100vw, 540px" width="1000" height="335" alt="An application waiting for the verification code the employer's site emailed" loading="lazy"></a></div>
+        <figcaption><b>Verification codes.</b> When a site emails a code, paste it in and the waiting browser finishes the submission.</figcaption>
+      </figure>
+      <figure class="uishot">
+        <div class="frame"><a href="ui/answers.jpg" target="_blank" rel="noopener" title="Open full size"><img src="ui/answers-sm.jpg" srcset="ui/answers-sm.jpg 1304w, ui/answers.jpg 2608w" sizes="(max-width: 900px) 100vw, 540px" width="1304" height="630" alt="Standing answers for address, work authorization, sponsorship, salary and EEO questions" loading="lazy"></a></div>
+        <figcaption><b>Standing answers.</b> Work authorization, sponsorship, salary and EEO questions come only from here. Leave one blank and you're asked every time.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
